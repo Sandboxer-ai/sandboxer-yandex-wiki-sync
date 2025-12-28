@@ -1,6 +1,6 @@
 # sandboxer-yandex-wiki-sync
 
-> **Disclaimer:** This library is an open-source project by **Sandboxer** and is not affiliated with, endorsed by, or supported by Yandex LLC. Use of this software is subject to Yandex API Terms of Service.
+> **Отказ от ответственности:** Эта библиотека — open-source проект **Sandboxer**, не связанный с Yandex LLC. Использование подчиняется условиям Yandex API Terms of Service.
 
 CLI-инструмент для двусторонней синхронизации локальной документации (Markdown) с [Yandex Wiki](https://wiki.yandex.ru).
 
