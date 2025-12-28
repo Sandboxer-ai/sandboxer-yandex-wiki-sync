@@ -2,7 +2,6 @@
 
 import json
 import logging
-import os
 import signal
 import sys
 from pathlib import Path
@@ -82,20 +81,22 @@ def _get_settings(
     if config_path is None:
         raise ConfigError(f"Файл конфигурации {CONFIG_FILE_NAME} не найден.\nСоздайте его командой: wiki-sync init")
 
-    # Получаем токен
-    env_token = os.environ.get("WIKI_SYNC_TOKEN")
-    final_token = token or env_token
-
-    if not final_token:
-        raise ConfigError(
-            "Токен не указан.\n"
-            "Установите переменную окружения: export WIKI_SYNC_TOKEN='y0_...'\n"
-            "Или передайте через --token"
-        )
-
     try:
-        return Settings.from_file(config_path, token=final_token)
+        # Токен берётся из: CLI аргумент > env WIKI_SYNC_TOKEN > .env файл
+        overrides = {}
+        if token:
+            overrides["token"] = token
+        return Settings.from_file(config_path, **overrides)
     except PydanticValidationError as e:
+        # Проверяем, что именно токен отсутствует
+        for error in e.errors():
+            if error["loc"] == ("token",) and error["type"] == "missing":
+                raise ConfigError(
+                    "Токен не указан.\n"
+                    "Установите переменную окружения: export WIKI_SYNC_TOKEN='y0_...'\n"
+                    "Или добавьте в .env файл: WIKI_SYNC_TOKEN=y0_...\n"
+                    "Или передайте через --token"
+                ) from e
         raise ConfigError(f"Ошибка конфигурации: {e}") from e
 
 
@@ -158,39 +159,20 @@ def _interactive_mode() -> None:
 
     signal.signal(signal.SIGINT, _signal_handler)
 
-    # Проверяем наличие конфига
-    config_path = find_config_file()
-    if config_path is None:
-        console.print(
-            Panel.fit(
-                "[yellow]📋 Конфигурация не найдена[/yellow]\n\n"
-                f"Создайте файл {CONFIG_FILE_NAME} командой:\n"
-                "[cyan]wiki-sync init[/cyan]",
-                title="wiki-sync",
-                border_style="yellow",
-            )
-        )
-        raise typer.Exit(2)
-
-    # Проверяем токен
-    token = os.environ.get("WIKI_SYNC_TOKEN")
-    if not token:
-        console.print(
-            Panel.fit(
-                "[yellow]🔑 Токен не найден[/yellow]\n\n"
-                "Установите переменную окружения:\n"
-                "[cyan]export WIKI_SYNC_TOKEN='y0_...'[/cyan]",
-                title="wiki-sync",
-                border_style="yellow",
-            )
-        )
-        raise typer.Exit(2)
-
     try:
-        settings = Settings.from_file(config_path, token=token)
+        settings = _get_settings()
         docs_dir = get_docs_dir(settings)
         sync = create_sync(settings, docs_dir)
         _sync_instance = sync
+    except ConfigError as e:
+        console.print(
+            Panel.fit(
+                f"[yellow]{e.message}[/yellow]",
+                title="wiki-sync",
+                border_style="yellow",
+            )
+        )
+        raise typer.Exit(e.exit_code) from None
     except WikiSyncError as e:
         err_console.print(f"[red]❌ {e.message}[/red]")
         raise typer.Exit(e.exit_code) from None
