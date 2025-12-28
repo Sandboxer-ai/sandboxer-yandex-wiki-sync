@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+         <loc>https://sandboxer-ai.github.io/sandboxer-yandex-wiki-sync/</loc>
+         <lastmod>2025-12-28</lastmod>
+    </url>
+    <url>
+         <loc>https://sandboxer-ai.github.io/sandboxer-yandex-wiki-sync/quickstart/</loc>
+         <lastmod>2025-12-28</lastmod>
+    </url>
+    <url>
+         <loc>https://sandboxer-ai.github.io/sandboxer-yandex-wiki-sync/api/</loc>
+         <lastmod>2025-12-28</lastmod>
+    </url>
+    <url>
+         <loc>https://sandboxer-ai.github.io/sandboxer-yandex-wiki-sync/api/api/</loc>
+         <lastmod>2025-12-28</lastmod>
+    </url>
+    <url>
+         <loc>https://sandboxer-ai.github.io/sandboxer-yandex-wiki-sync/api/config/</loc>
+         <lastmod>2025-12-28</lastmod>
+    </url>
+    <url>
+         <loc>https://sandboxer-ai.github.io/sandboxer-yandex-wiki-sync/api/errors/</loc>
+         <lastmod>2025-12-28</lastmod>
+    </url>
+    <url>
+         <loc>https://sandboxer-ai.github.io/sandboxer-yandex-wiki-sync/api/models/</loc>
+         <lastmod>2025-12-28</lastmod>
+    </url>
+    <url>
+         <loc>https://sandboxer-ai.github.io/sandboxer-yandex-wiki-sync/api/sync/</loc>
+         <lastmod>2025-12-28</lastmod>
+    </url>
+</urlset>
