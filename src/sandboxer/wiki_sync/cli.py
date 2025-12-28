@@ -223,10 +223,11 @@ def _interactive_mode() -> None:
 
         console.print("[bold]Действия:[/bold]")
         for key, description in actions:
-            console.print(f"  [{key}] {description}")
+            console.print(f"  [cyan]\\[{key}][/cyan] {description}")
 
         console.print()
-        choice = typer.prompt("Выберите действие", default="q").lower().strip()
+        available_keys = "/".join(key for key, _ in actions)
+        choice = typer.prompt(f"Введите букву ({available_keys})", default="q").lower().strip()
 
         if choice == "q":
             console.print("[dim]👋 До свидания![/dim]")
@@ -269,11 +270,11 @@ def _interactive_mode() -> None:
                 console.print(f"\n  Конфликт: [bold]{fs.file_path.name}[/bold]")
                 wiki_time = fs.wiki_modified.strftime("%Y-%m-%d %H:%M") if fs.wiki_modified else "?"
                 console.print(f"  Wiki изменена: {wiki_time}")
-                console.print("    [l] Оставить локальную версию (перезаписать Wiki)")
-                console.print("    [w] Скачать версию из Wiki (перезаписать локально)")
-                console.print("    [s] Пропустить")
+                console.print("    [cyan]\\[l][/cyan] Оставить локальную версию (перезаписать Wiki)")
+                console.print("    [cyan]\\[w][/cyan] Скачать версию из Wiki (перезаписать локально)")
+                console.print("    [cyan]\\[s][/cyan] Пропустить")
 
-                action = typer.prompt("Действие", default="s").lower().strip()
+                action = typer.prompt("Введите l/w/s", default="s").lower().strip()
                 if action == "l":
                     sync.push_file(fs)
                     console.print("    [green]✅ Локальная версия загружена в Wiki[/green]")
