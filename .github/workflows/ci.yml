@@ -70,19 +70,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install uv
-        uses: astral-sh/setup-uv@v5
-
-      - name: Set up Python
-        run: uv python install 3.11
-
-      - name: Install dependencies
-        run: uv sync
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
 
       - name: Audit dependencies
         uses: pypa/gh-action-pip-audit@v1.1.0
         with:
-          virtual-environment: .venv/
+          inputs: pyproject.toml
 
   test:
     name: Test (Python ${{ matrix.python-version }})
@@ -124,7 +119,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Needed for hatch-vcs
+          fetch-depth: 0
 
       - name: Install uv
         uses: astral-sh/setup-uv@v5
@@ -145,4 +140,3 @@ jobs:
         with:
           name: dist
           path: dist/
-
