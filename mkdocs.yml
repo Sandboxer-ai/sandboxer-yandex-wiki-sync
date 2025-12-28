@@ -1,0 +1,72 @@
+site_name: sandboxer-yandex-wiki-sync
+site_url: https://sandboxer-ai.github.io/sandboxer-yandex-wiki-sync/
+site_description: CLI для синхронизации Markdown с Yandex Wiki
+site_author: Sandboxer AI
+
+repo_url: https://github.com/Sandboxer-ai/sandboxer-yandex-wiki-sync
+repo_name: Sandboxer-ai/sandboxer-yandex-wiki-sync
+
+theme:
+  name: material
+  language: ru
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Тёмная тема
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Светлая тема
+  features:
+    - content.code.copy
+    - content.code.annotate
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.highlight
+    - toc.follow
+
+plugins:
+  - search
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          options:
+            docstring_style: google
+            show_root_heading: true
+            show_root_full_path: false
+            show_source: true
+            show_bases: true
+            members_order: source
+            separate_signature: true
+            signature_crossrefs: true
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - toc:
+      permalink: true
+
+nav:
+  - Главная: index.md
+  - Быстрый старт: quickstart.md
+  - API Reference:
+      - Обзор: api/index.md
+      - WikiSync: api/sync.md
+      - WikiAPI: api/api.md
+      - Settings: api/config.md
+      - Модели: api/models.md
+      - Ошибки: api/errors.md
+
