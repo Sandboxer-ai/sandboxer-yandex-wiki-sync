@@ -81,6 +81,8 @@ jobs:
 
       - name: Audit dependencies
         uses: pypa/gh-action-pip-audit@v1.1.0
+        with:
+          virtual-environment: .venv/
 
   test:
     name: Test (Python ${{ matrix.python-version }})
