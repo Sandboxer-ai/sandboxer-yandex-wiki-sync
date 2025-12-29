@@ -249,10 +249,6 @@ class WikiSync:
 
         return hash_content(local_stripped) != hash_content(wiki_content)
 
-    def _utc_now(self) -> str:
-        """Получить текущее время в UTC ISO формате."""
-        return datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3] + "Z"
-
     def get_status(self) -> SyncResult:
         """Получить статус синхронизации.
 
@@ -412,6 +408,13 @@ class WikiSync:
                 new_page = self.api.create_page(file_status.slug, title, content_for_wiki)
                 page_id = new_page.id
 
+            # Получаем актуальное время модификации из Wiki
+            # чтобы избежать time skew между локальным временем и сервером
+            wiki_modified = datetime.now(UTC)
+            page_content = self.api.get_page_content(page_id)
+            if page_content and page_content.modified_at:
+                wiki_modified = page_content.modified_at
+
             # Обновляем метаданные
             self._meta.set_page(
                 file_status.slug,
@@ -421,7 +424,7 @@ class WikiSync:
                     title=title,
                     file=str(file_status.file_path.relative_to(self.docs_dir)),
                     content_hash=hash_content(local_content),
-                    last_push=datetime.now(UTC),
+                    last_push=wiki_modified,
                 ),
             )
 
@@ -483,7 +486,13 @@ class WikiSync:
         elif not content:
             content = f"# {title}\n"
 
-        file_path = self._slug_to_path(slug)
+        # Используем путь из метаданных если есть, иначе вычисляем
+        # Это гарантирует обновление ТОГО ЖЕ файла, который отслеживается
+        meta = self._meta.get_page(slug)
+        if meta and meta.file:
+            file_path = self.docs_dir / meta.file
+        else:
+            file_path = self._slug_to_path(slug)
 
         try:
             file_path.parent.mkdir(parents=True, exist_ok=True)
