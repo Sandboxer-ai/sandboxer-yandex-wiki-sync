@@ -7,6 +7,8 @@
 
 ## [Unreleased]
 
+## [0.1.3] - 2024-12-29
+
 ### Fixed
 
 - **Sync**: Устранены ложные `remote_modified` из-за time skew между локальным временем и Wiki сервером
@@ -60,7 +62,8 @@
 - CI/CD с GitHub Actions
 - Документация на MkDocs + GitHub Pages
 
-[Unreleased]: https://github.com/Sandboxer-ai/sandboxer-yandex-wiki-sync/compare/v0.1.2...HEAD
+[Unreleased]: https://github.com/Sandboxer-ai/sandboxer-yandex-wiki-sync/compare/v0.1.3...HEAD
+[0.1.3]: https://github.com/Sandboxer-ai/sandboxer-yandex-wiki-sync/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/Sandboxer-ai/sandboxer-yandex-wiki-sync/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/Sandboxer-ai/sandboxer-yandex-wiki-sync/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/Sandboxer-ai/sandboxer-yandex-wiki-sync/releases/tag/v0.1.0
